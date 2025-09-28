@@ -1,0 +1,107 @@
+freshservice:
+  api_key: "YOUR_FRESHSERVICE_API_KEY"
+  # Either the tenant root or the documented API root both work; the client
+  # will trim duplicate /api/v2 segments automatically.
+  base_url: "https://yourdomain.freshservice.com"
+  # Optional. If provided, this overrides base_url construction.
+  endpoint_url: null
+  # Optional. Set to true to verify SSL certificates. Disable only for troubleshooting.
+  verify_ssl: true
+  # Limit how many tickets are pulled in a single request.
+  per_page: 100
+  # Optional request timeout in seconds.
+  timeout: 30
+  # Rate limiting helper used for courtesy sleeps between paginated calls.
+  rate_limit_per_minute: 240
+logging:
+  console:
+    enabled: true
+    level: INFO
+    rich_format: true
+  file:
+    enabled: true
+    level: DEBUG
+    path: logs/freshservice_workflow.log
+  bulk_update_run:
+    path_template: logs/bulk_updates/bulk_update_{timestamp}.log
+    level: DEBUG
+taxonomy:
+  max_suggestions: 3
+  priority_order:
+    - "Security > Remote Access > VPN Access"
+    - "Security > Remote Access"
+    - "Software > Creative & Design > Chaos (Vray / Corona)"
+  aliases:
+    - alias: "Citrix"
+      target:
+        - "Security"
+        - "Remote Access"
+        - "Anyware/RDP VM"
+      legacy: true
+      note: "Legacy Citrix terminology"
+  tree:
+    - label: "Security"
+      keywords:
+        - "security"
+        - "infosec"
+      regexes:
+        - "(?i)cyber[- ]security"
+      children:
+        - label: "Remote Access"
+          keywords:
+            - "remote access"
+            - "vpn"
+          aliases:
+            - "Remote Login"
+          children:
+            - label: "VPN Access"
+              keywords:
+                - "vpn access"
+                - "anyconnect"
+                - "globalprotect"
+    - label: "Software"
+      keywords:
+        - "software"
+        - "application"
+      children:
+        - label: "Creative & Design"
+          keywords:
+            - "adobe"
+            - "creative cloud"
+          children:
+            - label: "Chaos (Vray / Corona)"
+              keywords:
+                - "chaos"
+                - "vray"
+                - "corona"
+analysis:
+  keyword_min_length: 4
+  min_keyword_frequency: 3
+  max_suggestions_per_ticket: 2
+  stop_words:
+    - the
+    - and
+    - with
+    - from
+    - this
+    - that
+    - have
+    - into
+  keyword_overrides: {}
+reporting:
+  output_directory: reports
+  report_filename: ticket_analysis.csv
+reporting_suite:
+  # Where the advanced reporting bundle (HTML/PDF/JSON/images) should be written.
+  output_directory: reports/advanced
+  # Default formats generated when the CLI --format flag is omitted.
+  formats:
+    - html
+    - pdf
+    - images
+    - json
+updates:
+  # Track successfully updated ticket IDs so reruns can skip them. Edit this file
+  # to re-queue a ticket or delete it to rerun everything. Relative paths are
+  # resolved from the repository root unless you supply an absolute path.
+  skip_log: reports/updated_tickets.log
