@@ -1,5 +1,5 @@
 # A WARNING
-This was something I created after I got frustrated at the lack of options in the freshervice ticketing system web UI. Be warned that this is not really 'maintained', more that I'm going to update it when I feel it's useful. Be further warned that while I'm great with powershell I really am not great at Python, so this is vibe coded to hell and back. It was at least tested as far as I could test it in a real environment, and it does what I wanted it to do well enough. 
+This was something I created after I got frustrated at the lack of options in the Freshservice ticketing system web UI. Be warned that this is not really 'maintained', more that I'm going to update it when I feel it's useful. Be further warned that while I'm great with powershell I really am not great at Python, so this is vibe coded to hell and back. It was at least tested as far as I could test it in a real environment, and it does what I wanted it to do well enough. 
 
 # Freshservice Ticket Intelligence Toolkit
 
@@ -81,20 +81,20 @@ graph LR
 2. **Create your configuration** by copying the sample and inserting credentials:
 
    ```bash
-   cp freshservice_ticket_insights/config/config.example.yaml \
-      freshservice_ticket_insights/config/config.yaml
-   # Edit freshservice_ticket_insights/config/config.yaml to add your Freshservice API key and domain
+   cp config/config.example.yaml \
+      config/config.yaml
+   # Edit config/config.yaml to add your Freshservice API key and domain
    ```
 
    > Prefer to keep secrets outside the package tree? Create a sibling `config/` directory instead:
    >
    > ```bash
    > mkdir -p config
-   > cp freshservice_ticket_insights/config/config.example.yaml config/config.yaml
+   > cp config/config.example.yaml config/config.yaml
    > ```
    >
    > Both layouts are supported; when you keep the config at the default path
-   > `freshservice_ticket_insights/config/config.yaml` you can omit `--config`
+   > `config/config.yaml` you can omit `--config`
    > entirely. Add `--config /path/to/config.yaml` whenever you store the file
    > elsewhere (for example in a sibling `config/` directory).
 
@@ -110,19 +110,19 @@ graph LR
 4. **Install dependencies**:
 
    ```bash
-   pip install -r freshservice_ticket_insights/requirements.txt
+   pip install -r requirements.txt
    ```
 
 5. **Run the macOS or Windows fetcher** (they share the same internals):
 
    ```bash
-   python freshservice_ticket_insights/macos/fetch_and_analyze.py
+   python macos/fetch_and_analyze.py
    # Windows alternative
-   py -3 freshservice_ticket_insights\windows\fetch_and_analyze.py
+   py -3 windows\fetch_and_analyze.py
    # Add --config /custom/path.yaml if you keep credentials outside the default location
    ```
 
-6. Inspect the generated report under `freshservice_ticket_insights/reports/` and use the review worksheet to accept/reject suggestions. (If you override `reporting.output_directory` in `config.yaml`, adjust the paths below accordingly.)
+6. Inspect the generated report under `reports/` and use the review worksheet to accept/reject suggestions. (If you override `reporting.output_directory` in `config.yaml`, adjust the paths below accordingly.)
 7. Apply updates when ready (see [Bulk Updates](#bulk-updates)).
 
 ---
@@ -130,7 +130,7 @@ graph LR
 ## Tooling & Utilities
 
 Unless noted otherwise, the examples below pass `--config` explicitly for clarity. When your
-credentials live at the default `freshservice_ticket_insights/config/config.yaml`, you can drop the
+credentials live at the default `config/config.yaml`, you can drop the
 flag entirely.
 
 ### List taxonomy
@@ -140,8 +140,8 @@ configuration and logging settings as the primary workflows, so you can reuse yo
 `config.yaml` secrets and logging destinations.
 
 ```bash
-python freshservice_ticket_insights/tools/list_taxonomy.py \
-  --config freshservice_ticket_insights/config/config.yaml
+python tools/list_taxonomy.py \
+  --config config/config.yaml
 ```
 
 Sample output:
@@ -165,9 +165,9 @@ console table grouping tickets by their current category and calls out how many 
 uncategorised.
 
 ```bash
-python freshservice_ticket_insights/tools/summarize_ticket_categories.py
+python tools/summarize_ticket_categories.py
 # Optional: limit to recent activity
-# python freshservice_ticket_insights/tools/summarize_ticket_categories.py --updated-since 2024-06-01T00:00:00Z
+# python tools/summarize_ticket_categories.py --updated-since 2024-06-01T00:00:00Z
 ```
 
 Sample output:
@@ -209,16 +209,16 @@ ticket_id,note
 
 ```bash
 # Delete a single ticket
-python freshservice_ticket_insights/tools/delete_tickets.py \
-  --config freshservice_ticket_insights/config/config.yaml \
+python tools/delete_tickets.py \
+  --config config/config.yaml \
   --ticket-id 12345 --dry-run
 
 # Delete several tickets in one command
-python freshservice_ticket_insights/tools/delete_tickets.py \
+python tools/delete_tickets.py \
   --ticket-id 12345 --ticket-id 54321
 
 # Bulk delete from a CSV (requires a ticket_id column)
-python freshservice_ticket_insights/tools/delete_tickets.py \
+python tools/delete_tickets.py \
   --csv /path/to/bad_tickets.csv
 ```
 
@@ -229,7 +229,7 @@ with a single helper. Make sure to run `deactivate` first if the environment is 
 shell.
 
 ```bash
-python freshservice_ticket_insights/tools/cleanup_virtualenv.py --venv-path .venv
+python tools/cleanup_virtualenv.py --venv-path .venv
 ```
 
 Add `--purge-pip-cache` to run `pip cache purge` after deleting the directory, or `--dry-run` to
@@ -244,15 +244,15 @@ category for focused analysis.
 
 ```bash
 # macOS / Linux
-python freshservice_ticket_insights/macos/generate_reports.py \
-  --config freshservice_ticket_insights/config/config.yaml \
+python macos/generate_reports.py \
+  --config config/config.yaml \
   --start-date 2024-01-01T00:00:00Z \
   --end-date 2024-03-31T23:59:59Z \
   --category "Software" --format html --format pdf --format images
 
 # Windows
-python freshservice_ticket_insights/windows/generate_reports.py \
-  --config freshservice_ticket_insights\\config\\config.yaml \
+python windows/generate_reports.py \
+  --config config\\config.yaml \
   --start-date 2024-01-01T00:00:00Z \
   --format html --format pdf
 ```
@@ -281,8 +281,8 @@ can be matched to a Freshservice profile. Existing values are skipped automatica
 in `--dry-run` mode to audit planned changes.
 
 ```bash
-python freshservice_ticket_insights/tools/update_requester_organizations.py \
-  --config freshservice_ticket_insights/config/config.yaml \
+python tools/update_requester_organizations.py \
+  --config config/config.yaml \
   --csv exports/requester_organizations.csv --dry-run
 ```
 
@@ -304,8 +304,8 @@ UI does not expose. Supply one or more requester IDs or email addresses along wi
 assignments you wish to change.
 
 ```bash
-python freshservice_ticket_insights/tools/update_requesters.py \
-  --config freshservice_ticket_insights/config/config.yaml \
+python tools/update_requesters.py \
+  --config config/config.yaml \
   --requester-id 101 --requester-id 202 \
   --set department="Information Technology" --unset time_zone \
   --set-json custom_fields='{"office_location": "London"}'
@@ -327,7 +327,7 @@ calls, and prints a summary detailing how many requesters were updated or skippe
 
 ## Configuration & Secrets Management
 
-- **Never hardcode credentials**. Store the API key and Freshservice base URL inside `freshservice_ticket_insights/config/config.yaml` (default) or a sibling `config/config.yaml` and reference it with `--config` when using the alternate location.
+- **Never hardcode credentials**. Store the API key and Freshservice base URL inside `config/config.yaml` (default) or a sibling `config/config.yaml` and reference it with `--config` when using the alternate location.
 - The configuration file supports:
   - `freshservice` block with API key, URL, timeout, pagination, and SSL verification toggle.
     - Supply the tenant root such as `https://yourdomain.freshservice.com`; if you accidentally include the documented API prefix (`/api/v2`), the client now trims it automatically so requests resolve correctly.
@@ -374,12 +374,12 @@ Scripts honour `--config` to point at alternate files, and fallback search paths
    - **Example invocations:**
      ```bash
     # Full refresh with console debug output
-    python freshservice_ticket_insights/macos/fetch_and_analyze.py \
-      --config freshservice_ticket_insights/config/config.yaml --show-console-log --console-level DEBUG
+    python macos/fetch_and_analyze.py \
+      --config config/config.yaml --show-console-log --console-level DEBUG
 
      # Incremental run for tickets updated since 1 June 2024 without generating a review template
-     python freshservice_ticket_insights/macos/fetch_and_analyze.py \
-       --config freshservice_ticket_insights/config/config.yaml --updated-since 2024-06-01T00:00:00Z --skip-review-template
+     python macos/fetch_and_analyze.py \
+       --config config/config.yaml --updated-since 2024-06-01T00:00:00Z --skip-review-template
      ```
 2. **Review Helper** – `macos/review_suggestions.py`
    - Summarises approval stats and can export filtered subsets for stakeholder review.
@@ -387,12 +387,12 @@ Scripts honour `--config` to point at alternate files, and fallback search paths
    - **Example invocations:**
      ```bash
      # Display approval summary for the default review worksheet
-     python freshservice_ticket_insights/macos/review_suggestions.py \
-       freshservice_ticket_insights/reports/ticket_analysis_review.csv
+     python macos/review_suggestions.py \
+       reports/ticket_analysis_review.csv
 
      # Export only declined rows to a new CSV
-     python freshservice_ticket_insights/macos/review_suggestions.py \
-       freshservice_ticket_insights/reports/ticket_analysis_review.csv --decision decline --export declined_rows.csv
+     python macos/review_suggestions.py \
+       reports/ticket_analysis_review.csv --decision decline --export declined_rows.csv
      ```
 3. **Apply Updates** – `macos/apply_updates.py`
    - Shows a progress bar with elapsed/ETA metrics by default; include `--show-console-log` to restore the streaming log output (legacy switches such as `--disable-console-log`, `--simple-console`, and `--console-level` still work when logs are visible).
@@ -404,13 +404,13 @@ Scripts honour `--config` to point at alternate files, and fallback search paths
    - **Example invocations:**
      ```bash
      # Test a single ticket update without committing changes
-     python freshservice_ticket_insights/macos/apply_updates.py \
-       --config freshservice_ticket_insights/config/config.yaml --ticket-id 12345 --category "Hardware" \
+     python macos/apply_updates.py \
+       --config config/config.yaml --ticket-id 12345 --category "Hardware" \
        --sub-category "Peripherals" --item-category "Audio / Video Devices" --dry-run
 
      # Apply all approved decisions from the review worksheet
-     python freshservice_ticket_insights/macos/apply_updates.py \
-       --config freshservice_ticket_insights/config/config.yaml --review-csv freshservice_ticket_insights/reports/ticket_analysis_review.csv
+     python macos/apply_updates.py \
+       --config config/config.yaml --review-csv reports/ticket_analysis_review.csv
      ```
 
 Each script can be launched from an IDE by importing the underlying functions (`FetchAnalyzeOptions`, `ApplyUpdatesOptions`, etc.) for granular debugging.
@@ -426,26 +426,26 @@ The Windows entry points expose the same options—including `--dry-run` and ide
 
 ```powershell
 # Fetch with verbose logging
-py -3 freshservice_ticket_insights\windows\fetch_and_analyze.py --config freshservice_ticket_insights\config\config.yaml --show-console-log --console-level DEBUG
+py -3 windows\fetch_and_analyze.py --config config\config.yaml --show-console-log --console-level DEBUG
 
 # Summarise review decisions
-py -3 freshservice_ticket_insights\windows\review_suggestions.py freshservice_ticket_insights\reports\ticket_analysis_review.csv --decision approve
+py -3 windows\review_suggestions.py reports\ticket_analysis_review.csv --decision approve
 
 # Targeted ticket tests (mix and match the override switches)
-py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservice_ticket_insights\config\config.yaml --ticket-id 12345 --category "Hardware"
-py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservice_ticket_insights\config\config.yaml --ticket-id 45678 --category "Software" --sub-category "Productivity"
-py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservice_ticket_insights\config\config.yaml --ticket-id 98765 --category "Software" --sub-category "Creative & Design" --item-category "Adobe"
+py -3 windows\apply_updates.py --config config\config.yaml --ticket-id 12345 --category "Hardware"
+py -3 windows\apply_updates.py --config config\config.yaml --ticket-id 45678 --category "Software" --sub-category "Productivity"
+py -3 windows\apply_updates.py --config config\config.yaml --ticket-id 98765 --category "Software" --sub-category "Creative & Design" --item-category "Adobe"
 
 # Apply all approved updates (dry run first)
-py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservice_ticket_insights\config\config.yaml --review-csv freshservice_ticket_insights\reports\ticket_analysis_review.csv --dry-run
-py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservice_ticket_insights\config\config.yaml --review-csv freshservice_ticket_insights\reports\ticket_analysis_review.csv
+py -3 windows\apply_updates.py --config config\config.yaml --review-csv reports\ticket_analysis_review.csv --dry-run
+py -3 windows\apply_updates.py --config config\config.yaml --review-csv reports\ticket_analysis_review.csv
 ```
 
 ---
 
 ## Review & Approval Process
 
-1. After the fetch script runs, open `freshservice_ticket_insights/reports/ticket_analysis_review.csv` in your spreadsheet editor.
+1. After the fetch script runs, open `reports/ticket_analysis_review.csv` in your spreadsheet editor.
 2. For each ticket row:
    - Set `manager_decision` to `approve`, `decline`, `skip`, or leave `pending`. This column records the decision made by the reviewer (typically the manager running the workflow) and drives which rows are eligible for updates.
    - Adjust `final_category`, `final_sub_category`, and `final_item_category` as required.
@@ -454,8 +454,8 @@ py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservic
 3. Run the review helper to surface metrics:
 
    ```bash
-   python freshservice_ticket_insights/macos/review_suggestions.py \
-     freshservice_ticket_insights/reports/ticket_analysis_review.csv --decision approve
+   python macos/review_suggestions.py \
+     reports/ticket_analysis_review.csv --decision approve
    ```
 
 4. When satisfied, proceed to updates.
@@ -470,23 +470,23 @@ py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservic
 
   ```bash
   # Update only the top-level category (useful when no sub-values exist)
-  python freshservice_ticket_insights/macos/apply_updates.py \
-    --config freshservice_ticket_insights/config/config.yaml --ticket-id 12345 --category "Hardware"
+  python macos/apply_updates.py \
+    --config config/config.yaml --ticket-id 12345 --category "Hardware"
 
   # Update a category and sub-category pair
-  python freshservice_ticket_insights/macos/apply_updates.py \
-    --config freshservice_ticket_insights/config/config.yaml --ticket-id 45678 \
+  python macos/apply_updates.py \
+    --config config/config.yaml --ticket-id 45678 \
     --category "Software" --sub-category "Productivity"
 
   # Update a full three-level path in one shot
-  python freshservice_ticket_insights/macos/apply_updates.py \
-    --config freshservice_ticket_insights/config/config.yaml --ticket-id 98765 \
+  python macos/apply_updates.py \
+    --config config/config.yaml --ticket-id 98765 \
     --category "Software" --sub-category "Creative & Design" \
     --item-category "Adobe"
 
   # Exercise multiple tickets in a single dry-run before committing
-  python freshservice_ticket_insights/macos/apply_updates.py \
-    --config freshservice_ticket_insights/config/config.yaml --ticket-id 12345 --ticket-id 67890 \
+  python macos/apply_updates.py \
+    --config config/config.yaml --ticket-id 12345 --ticket-id 67890 \
     --category "Security" --sub-category "Authentication (MFA / Login)" \
     --dry-run
   ```
@@ -494,7 +494,7 @@ py -3 freshservice_ticket_insights\windows\apply_updates.py --config freshservic
 - **Bulk apply after approval:**
 
   ```bash
-  python freshservice_ticket_insights/macos/apply_updates.py --config freshservice_ticket_insights/config/config.yaml --review-csv freshservice_ticket_insights/reports/ticket_analysis_review.csv
+  python macos/apply_updates.py --config config/config.yaml --review-csv reports/ticket_analysis_review.csv
   ```
 
 - **Error handling:** If Freshservice rejects a row, the updater logs the HTTP status, message, and ticket ID, records the failure in the run log, and continues processing the remaining approvals. Review the log after each run to re-queue any failures or adjust the taxonomy where needed.
@@ -540,14 +540,14 @@ A dedicated [Logging Deep Dive](docs/logging.md) illustrates sample entries and 
 | Windows scripts | Python (entry points) | Reuse shared modules |
 | PowerShell preview | PowerShell 7.2+ | `powershell-yaml` module |
 
-Install Python dependencies via `pip install -r freshservice_ticket_insights/requirements.txt`.
+Install Python dependencies via `pip install -r requirements.txt`.
 
 ---
 
 ## Testing & Validation Tips
 
 - Run `pytest` to execute the regression suite (requires `pytest` in your development environment).
-- Run `python -m compileall freshservice_ticket_insights` to ensure there are no syntax errors before production use.
+- Run `python -m compileall .` to ensure there are no syntax errors before production use.
 - Use the `--updated-since` flag to limit fetches during dry runs and reduce API load.
 - Set `logging.console.level` to `DEBUG` in the config to trace API payloads.
 - Inspect the generated logs in `logs/` after each run to confirm payloads and responses.
@@ -558,7 +558,7 @@ Install Python dependencies via `pip install -r freshservice_ticket_insights/req
 ## Directory Map
 
 ```text
-freshservice_ticket_insights/
+Freshservice-Ticket-Modules/
 ├── README.md
 ├── requirements.txt
 ├── config/
@@ -580,11 +580,20 @@ freshservice_ticket_insights/
 ├── macos/
 │   ├── apply_updates.py
 │   ├── fetch_and_analyze.py
+│   ├── generate_reports.py
 │   └── review_suggestions.py
 ├── windows/
 │   ├── apply_updates.py
 │   ├── fetch_and_analyze.py
+│   ├── generate_reports.py
 │   └── review_suggestions.py
+├── tools/
+│   ├── cleanup_virtualenv.py
+│   ├── delete_tickets.py
+│   ├── list_taxonomy.py
+│   ├── summarize_ticket_categories.py
+│   ├── update_requester_organizations.py
+│   └── update_requesters.py
 └── powershell/
     ├── ApplyUpdates.ps1
     ├── FetchAndAnalyze.ps1
