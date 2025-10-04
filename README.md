@@ -48,7 +48,44 @@ The scripts are modular so you can run individual functions from an IDE or REPL 
 
 ## High-Level Architecture
 
-<img width="2048" height="2048" alt="image" src="https://github.com/user-attachments/assets/99c2079e-1117-48f7-8b03-3de6e5691b35" />
+<pre>
+Config YAML
+    │
+    ▼
+FreshserviceClient
+    ├──(ticket_form_fields)──▶ Taxonomy Normaliser
+    │                              │
+    │                              ▼
+    │                        TicketAnalyzer
+    │                              ▲
+    └──(tickets)────────────▶ TicketRecord Builder
+                                   │
+                                   ▼
+                           TicketAnalyzer
+                                   │
+                                   ▼
+                        TicketReportWriter
+                                   │
+                                   ▼
+                Analysis CSV + Review Template
+                                   │
+                                   ▼
+                         Manager Approval
+                                   │
+                                   ▼
+                         ReviewWorksheet
+                                   │
+                                   ▼
+                           TicketUpdater
+                                   │
+                                   ▼
+                  [PUT /tickets/{id} to:]
+                                   │
+                                   ▼
+                        FreshserviceClient
+</pre>
+
+
 
 ---
 
