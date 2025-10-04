@@ -1,6 +1,8 @@
 # A WARNING
 This was something I created after I got frustrated at the lack of options in the Freshservice ticketing system web UI. Be warned that this is not really 'maintained', more that I'm going to update it when I feel it's useful. Be further warned that while I'm great with powershell I really am not great at Python, so this is vibe coded to hell and back. It was at least tested as far as I could test it in a real environment, and it does what I wanted it to do well enough. 
 
+This was created as part of an experiment to research just how realistic it was to vibe code something. It is in no way meant to showcase my actual abilities because, well, duh, it's vibe coded by CoPilot and ChatGPT Codex (Mostly by the latter). 
+
 # Freshservice Ticket Intelligence Toolkit
 
 > **Purpose:** empower IT managers to export, analyse, and curate Freshservice ticket metadata so that reporting categories remain accurate across macOS, Windows, and experimental PowerShell workflows.
