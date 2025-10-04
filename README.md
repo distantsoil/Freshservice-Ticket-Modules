@@ -48,20 +48,7 @@ The scripts are modular so you can run individual functions from an IDE or REPL 
 
 ## High-Level Architecture
 
-```mermaid
-graph LR
-    A[Config YAML<br/>API Key, Base URL, Logging] --> B(FreshserviceClient)
-    B -->|ticket_form_fields| C[Taxonomy Normaliser]
-    B -->|tickets| D[TicketRecord Builder]
-    C --> E[TicketAnalyzer]
-    D --> E
-    E -->|Suggestions & Patterns| F[TicketReportWriter]
-    F --> G[Analysis CSV + Review Template]
-    G --> H[Manager Approval]
-    H --> I[ReviewWorksheet]
-    I --> J[TicketUpdater]
-    J -->|PUT /tickets/{id}| B
-```
+<img width="2048" height="2048" alt="image" src="https://github.com/user-attachments/assets/99c2079e-1117-48f7-8b03-3de6e5691b35" />
 
 ---
 
