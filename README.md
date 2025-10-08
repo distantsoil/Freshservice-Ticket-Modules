@@ -14,6 +14,7 @@
 3. [Features at a Glance](#features-at-a-glance)
 4. [Quick Start (macOS & Windows)](#quick-start-macos--windows)
 5. [Tooling & Utilities](#tooling--utilities)
+5a. [Quick Ticket Hygiene: Missing Category](#quick-ticket-hygiene-missing-category)
 6. [Configuration & Secrets Management](#configuration--secrets-management)
 7. [macOS Workflow Details](#macos-workflow-details)
 8. [Windows Workflow Details](#windows-workflow-details)
@@ -387,6 +388,20 @@ match the official API specification.
 Scripts honour `--config` to point at alternate files, and fallback search paths include `~/.freshservice/config.yaml`. When you keep the configuration at the default package path you can skip the flag entirely.
 
 > 🛡️ Recommendation: place the configuration file within an OS keychain or encrypted volume when not in use.
+
+---
+
+## Quick Ticket Hygiene: Missing Category
+
+Need to quickly find recent tickets that slipped through without a category? Use the cross‑platform tool:
+
+- `tools/find_tickets_missing_category.py`
+
+Examples:
+- macOS/Linux: `python3 tools/find_tickets_missing_category.py --days 7 --output table`
+- Windows (PowerShell): `python .\tools\find_tickets_missing_category.py --days 7 --output table`
+
+Output formats include `table` (default), `csv`, and `json`. See `tools/README.md` for full usage and additional examples.
 
 ---
 
