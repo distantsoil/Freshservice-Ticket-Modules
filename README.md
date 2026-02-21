@@ -3,6 +3,15 @@
 > 
 > This was created as part of an experiment to research just how realistic it was to vibe code something. It is in no way meant to showcase my actual abilities because, well, duh, it's vibe coded by CoPilot and ChatGPT Codex (Mostly by the latter). 
 
+> [!IMPORTANT]
+> The company I worked for at the time I created this **did** use freshservice, **however** this tool was **NEVER** connected to the company systems for testing, or any other purpose. An independent freshservice environment was used with AI generated 'sample tickets' that were injected into it. 
+>
+> This project was purely for research into the capabilities of AI code tools and whether I would personally want to use them. 
+
+> [!CAUTION]
+> If you choose to try this on a real environment, you do so at your own risk. Many changes this code made cannot be reversed. 
+> Never use this tool without the consent and authotization of your IT department. If you **are** the IT department or IT department head, **READ AND UNDERSTAND EVERYTHING** before you try to use this. Especially the bit above about this being 100% vibe coded and purely as an experiment. 
+
 # Freshservice Ticket Intelligence Toolkit
 
 > **Purpose:** empower IT managers to export, analyse, and curate Freshservice ticket metadata so that reporting categories remain accurate across macOS, Windows, and experimental PowerShell workflows.
