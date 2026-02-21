@@ -11,7 +11,10 @@
 > [!CAUTION]
 > If you choose to try this on a real environment, you do so at your own risk. Many changes this code makes **CANNOT** be reversed.
 >
-> Never use this tool without the consent and authotization of your IT department. If you **are** the IT department or IT department head, **READ AND UNDERSTAND EVERYTHING** before you try to use this. Especially the bit above about this being 100% vibe coded and purely as an experiment. 
+> **NEVER** use this tool without the consent and authotization of your IT department and department leaders. 
+> 
+> If you **are** the IT department or IT department head, or, frankly, anyone else, **READ AND UNDERSTAND EVERYTHING** before you try to use this. Especially the bit above about this being 100% vibe coded and purely as an experiment. 
+>
 
 # Freshservice Ticket Intelligence Toolkit
 
